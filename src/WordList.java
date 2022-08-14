@@ -1,27 +1,79 @@
 package src;
-import java.util.ArrayList;
+
+import java.net.HttpURLConnection;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.net.URL;
 import java.util.Random;
+import java.util.Scanner;
 
 public class WordList {
-    private ArrayList<String> words = new ArrayList<>();
     private String wordToGuess = "";
     private String remainingLettersToGuess = "";
     private String currentWordState = "";
+    private String definition = "";
+
     private Random random = new Random();
 
     public WordList(){
-        //default words
-        this.words.add("Dog");
-        this.words.add("Tiger");
-        this.words.add("Elephant");
 
-        this.wordToGuess = words.get(random.nextInt(words.size()));
+        String[] wordAndDefinition = generateWord();
+        this.wordToGuess = wordAndDefinition[0];
+        this.definition = wordAndDefinition[1];
 
         this.remainingLettersToGuess = this.wordToGuess;
 
         for(int i = 0; i<this.wordToGuess.length(); i++){
             this.currentWordState += "_";
         }
+
+    }
+
+    public String[] generateWord(){
+
+        try{
+            URL url = new URL("https://random-words-api.vercel.app/word\n");
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+
+            //check of connection successful
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode != 200){
+
+                throw new RuntimeException("Can't connect to the API, HttpResponseCode: " + responseCode);
+            }else{
+
+                StringBuilder result = new StringBuilder();
+                Scanner scanner = new Scanner(url.openStream());
+
+                while (scanner.hasNext()){
+                    result.append(scanner.nextLine());
+                }
+
+                JSONParser parser = new JSONParser();
+                Object obj  = parser.parse(result.toString());
+                JSONArray array = (JSONArray) obj;
+
+                JSONObject jsonObject = (JSONObject)array.get(0);
+
+                String definition = (String) jsonObject.get("definition");
+                String word = (String) jsonObject.get("word");
+
+
+                return new String[]{word, definition};
+
+            }
+
+        }
+         catch (Exception e) {
+             System.out.println("SOMETHIGN WENT WRONG");
+            throw new RuntimeException(e);
+        }
+
     }
     public void updateWordToGuess(char letter){
 
@@ -31,7 +83,6 @@ public class WordList {
                 this.remainingLettersToGuess = this.remainingLettersToGuess.substring(0,i) + " " + this.remainingLettersToGuess.substring(i+1);
             }
         }
-        System.out.println(this.currentWordState);
     }
     public String getWordToGuess(){
         return this.wordToGuess;
@@ -45,6 +96,9 @@ public class WordList {
     }
     public String getCurrentWordState() {
         return this.currentWordState;
+    }
+    public String getDefinition() {
+        return this.definition;
     }
 }
 

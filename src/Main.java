@@ -1,10 +1,4 @@
 package src;
-
-/*A class responsible for storing your words with a method to randomly select a word.
-A class responsible for displaying the results of the guess.
-A class responsible for interacting with the player e.g. capture input, print messages.
-A class responsible for connecting these classes together and running the game.*/
-
 public class Main {
     public static void main(String args[]){
         startGame();
@@ -13,35 +7,50 @@ public class Main {
         final Result result = new Result();
         final WordList wordList = new WordList();
         final Interaction interactions = new Interaction();
+        boolean showDefinition = false;
 
         System.out.println(wordList.getWordToGuess());
         System.out.println(interactions.getIntroduction());
-
         interactions.updateHangManImage(result.getLives());
 
         while(!wordList.checkIfGuessed() && result.getLives()>0){
 
+            if(!showDefinition){System.out.println("Enter '1' to reveal definition.");}
+
             String guessedLetter = interactions.askForLetter(wordList.getCurrentWordState());
 
+            if(showDefinition){System.out.println(interactions.showDefinition(wordList.getDefinition()));}
+
+            if(guessedLetter.equals("1") && !showDefinition){
+                System.out.println(interactions.showDefinition(wordList.getDefinition()));
+                showDefinition = true;
+                continue;
+            }
+
+            if (!interactions.checkIfValidInput(guessedLetter)){
+              interactions.wrongInputMessage();
+              continue;
+            }
+
             if(wordList.remainingLettersToGuess().toLowerCase().contains(guessedLetter.toLowerCase())){
-                System.out.println(interactions.CorrectCharGuessMessage(guessedLetter));
+                System.out.println(interactions.correctCharGuessMessage(guessedLetter));
                 wordList.updateWordToGuess(guessedLetter.charAt(0));
             }
             else{
-                System.out.println(interactions.WrongCharGuessMessage(guessedLetter));
+                System.out.println(interactions.wrongCharGuessMessage(guessedLetter));
                 result.reduceLives();
             }
 
             //UPDATE BOARD DISPLAYED IMAGES
             interactions.updateHangManImage(result.getLives());
 
-
         }
 
         if(wordList.checkIfGuessed()){
-            System.out.println(interactions.WonMessage());
+            System.out.println(interactions.wonMessage());
         }else{
-            System.out.println(interactions.LostMessage());
+            System.out.println(interactions.lostMessage(wordList.getWordToGuess()));
         }
     }
+
 }
