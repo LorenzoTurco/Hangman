@@ -2,12 +2,11 @@ package src;
 import java.util.Scanner;
 public class Interaction {
 
-    String playerName = "player";
     final String introduction = "Welcome to Hangman";
 
     public String getIntroduction(){
-        return this.introduction + " "  + this.playerName + " !!!";
-    }
+        return this.introduction;}
+
 
     public String askForLetter(String currentWordState){
 
@@ -28,8 +27,6 @@ public class Interaction {
     public String showDefinition(String hint){
         return "DEFINITION: " +hint;
     }
-
-
     public String wonMessage (){
         return "You WON! You guessed the word correctly!";
     }

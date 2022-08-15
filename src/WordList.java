@@ -70,7 +70,7 @@ public class WordList {
 
         }
          catch (Exception e) {
-             System.out.println("SOMETHIGN WENT WRONG");
+             System.out.println("SOMETHING WENT WRONG");
             throw new RuntimeException(e);
         }
 
