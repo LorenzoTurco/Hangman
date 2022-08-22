@@ -1,5 +1,6 @@
 package src;
 import java.util.Scanner;
+import java.util.List;
 public class Interaction {
 
     final String introduction = "Welcome to Hangman";
@@ -8,11 +9,17 @@ public class Interaction {
         return this.introduction;}
 
 
-    public String askForLetter(String currentWordState){
+    public String askForLetter(String currentWordState, List lettersGuessed){
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Guess letter: "+ currentWordState);
         String letter = scanner.nextLine();
+
+        while(lettersGuessed.contains(letter)){
+            System.out.println("letter" + " '" + letter+"' " + "already guessed!");
+            System.out.println("Guess different letter: "+ currentWordState);
+            letter = scanner.nextLine();
+        }
 
         return letter;
     }

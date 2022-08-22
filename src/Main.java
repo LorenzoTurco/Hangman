@@ -1,4 +1,8 @@
 package src;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main(String args[]){
         startGame();
@@ -9,6 +13,8 @@ public class Main {
         final Interaction interactions = new Interaction();
         boolean showDefinition = false;
 
+        List lettersGuessed = new ArrayList<String>();
+
         System.out.println(wordList.getWordToGuess());
         System.out.println(interactions.getIntroduction());
         interactions.updateHangManImage(result.getLives());
@@ -17,7 +23,8 @@ public class Main {
 
             if(!showDefinition){System.out.println("Enter '1' to reveal definition.");}
 
-            String guessedLetter = interactions.askForLetter(wordList.getCurrentWordState());
+            String guessedLetter = interactions.askForLetter(wordList.getCurrentWordState(), lettersGuessed);
+            lettersGuessed.add(guessedLetter);
 
             if(showDefinition){System.out.println(interactions.showDefinition(wordList.getDefinition()));}
 
