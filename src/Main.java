@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+    static final Result result = new Result();
+    static final WordList wordList = new WordList();
+    static final Interaction interactions = new Interaction();
     public static void main(String args[]){
-        startGame();
+        Main main = new Main();
+        main.startGame();
     }
     public static void startGame(){
-        final Result result = new Result();
-        final WordList wordList = new WordList();
-        final Interaction interactions = new Interaction();
+
         boolean showDefinition = false;
 
         List lettersGuessed = new ArrayList<String>();
