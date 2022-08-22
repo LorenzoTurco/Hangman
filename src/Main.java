@@ -25,8 +25,9 @@ public class Main {
 
             if(!showDefinition){System.out.println("Enter '1' to reveal definition.");}
 
-            String guessedLetter = interactions.askForLetter(wordList.getCurrentWordState(), lettersGuessed);
-            lettersGuessed.add(guessedLetter);
+            String guessedLetter = interactions.askForLetter(wordList.getCurrentWordState(), lettersGuessed, showDefinition);
+
+            if(!guessedLetter.equals("1"))lettersGuessed.add(guessedLetter);
 
             if(showDefinition){System.out.println(interactions.showDefinition(wordList.getDefinition()));}
 
@@ -34,11 +35,6 @@ public class Main {
                 System.out.println(interactions.showDefinition(wordList.getDefinition()));
                 showDefinition = true;
                 continue;
-            }
-
-            if (!interactions.checkIfValidInput(guessedLetter)){
-              interactions.wrongInputMessage();
-              continue;
             }
 
             if(wordList.remainingLettersToGuess().toLowerCase().contains(guessedLetter.toLowerCase())){
@@ -52,11 +48,9 @@ public class Main {
 
             //UPDATE BOARD DISPLAYED IMAGES
             interactions.updateHangManImage(result.getLives());
-
         }
-
         if(wordList.checkIfGuessed()){
-            System.out.println(interactions.wonMessage());
+            System.out.println(interactions.wonMessage(wordList.getWordToGuess()));
         }else{
             System.out.println(interactions.lostMessage(wordList.getWordToGuess()));
         }

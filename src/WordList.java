@@ -27,7 +27,6 @@ public class WordList {
         for(int i = 0; i<this.wordToGuess.length(); i++){
             this.currentWordState += "_";
         }
-
     }
 
     public String[] generateWord(){
@@ -63,11 +62,8 @@ public class WordList {
                 String definition = (String) jsonObject.get("definition");
                 String word = (String) jsonObject.get("word");
 
-
                 return new String[]{word, definition};
-
             }
-
         }
          catch (Exception e) {
              System.out.println("SOMETHING WENT WRONG");
