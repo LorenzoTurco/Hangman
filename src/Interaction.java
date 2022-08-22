@@ -13,6 +13,7 @@ public class Interaction {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Guess letter: "+ currentWordState);
+        System.out.println("Already guessed letters: " + lettersGuessed.toString());
         String letter = scanner.nextLine();
 
         while(lettersGuessed.contains(letter)){
